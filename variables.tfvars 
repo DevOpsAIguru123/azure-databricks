@@ -6,7 +6,7 @@ snowflake_details = {
     user          = "user1"
     sfwarehouse   = "warehouse1"
     password_name = "snowflake_password_1"  # Key Vault secret name
-    catalog       = "db1"
+    catalog       = "db1"  # Database name
   }
   snow_conn_2 = {
     host          = "xyz2.azure.snowflakecomputing.com"

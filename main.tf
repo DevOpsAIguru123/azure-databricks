@@ -52,9 +52,20 @@ resource "databricks_connection" "snowflake_connections" {
 resource "databricks_catalog" "snowflake_catalogs" {
   for_each = var.snowflake_details
 
-  name         = each.value.catalog  # Use the catalog name (e.g., db1)
-  comment      = "Catalog for Snowflake connection ${each.key}"
-  provider_name = databricks_connection.snowflake_connections[each.key].name  # Reference the connection name
+  name            = each.value.catalog  # Use the database name (e.g., db1)
+  connection_name = databricks_connection.snowflake_connections[each.key].name  # Reference the connection name
+  comment         = "Catalog for database ${each.value.catalog}"
+
+  options = {
+    database = each.value.catalog  # Map the catalog to the respective database
+  }
 }
 
-
+# Example Azure Key Vault resource definition (if needed)
+resource "azurerm_key_vault" "example" {
+  name                = "example-vault"
+  location            = "East US"
+  resource_group_name = "example-resource-group"
+  tenant_id           = "<tenant_id>"
+  sku_name            = "standard"
+}
