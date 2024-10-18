@@ -1,47 +1,43 @@
-# Snowflake connection details
-snowflake_connections = {
+# Map of connection details with key-value pairs for each Snowflake connection
+snowflake_details = {
   snow_conn_1 = {
-    host        = "xyz1.azure.snowflakecomputing.com"
-    port        = "443"
-    user        = "user1"
-    sfwarehouse = "warehouse1"
-    purpose     = "testing1"
+    host          = "xyz1.azure.snowflakecomputing.com"
+    port          = "443"
+    user          = "user1"
+    sfwarehouse   = "warehouse1"
+    password_name = "snowflake_password_1"  # Key Vault secret name
+    catalog       = "db1"
   }
   snow_conn_2 = {
-    host        = "xyz2.azure.snowflakecomputing.com"
-    port        = "443"
-    user        = "user2"
-    sfwarehouse = "warehouse2"
-    purpose     = "testing2"
+    host          = "xyz2.azure.snowflakecomputing.com"
+    port          = "443"
+    user          = "user2"
+    sfwarehouse   = "warehouse2"
+    password_name = "snowflake_password_2"
+    catalog       = "db2"
   }
   snow_conn_3 = {
-    host        = "xyz3.azure.snowflakecomputing.com"
-    port        = "443"
-    user        = "user3"
-    sfwarehouse = "warehouse3"
-    purpose     = "testing3"
+    host          = "xyz3.azure.snowflakecomputing.com"
+    port          = "443"
+    user          = "user3"
+    sfwarehouse   = "warehouse3"
+    password_name = "snowflake_password_3"
+    catalog       = "db3"
   }
   snow_conn_4 = {
-    host        = "xyz4.azure.snowflakecomputing.com"
-    port        = "443"
-    user        = "user4"
-    sfwarehouse = "warehouse4"
-    purpose     = "testing4"
+    host          = "xyz4.azure.snowflakecomputing.com"
+    port          = "443"
+    user          = "user4"
+    sfwarehouse   = "warehouse4"
+    password_name = "snowflake_password_4"
+    catalog       = "db4"
   }
   snow_conn_5 = {
-    host        = "xyz5.azure.snowflakecomputing.com"
-    port        = "443"
-    user        = "user5"
-    sfwarehouse = "warehouse5"
-    purpose     = "testing5"
+    host          = "xyz5.azure.snowflakecomputing.com"
+    port          = "443"
+    user          = "user5"
+    sfwarehouse   = "warehouse5"
+    password_name = "snowflake_password_5"
+    catalog       = "db5"
   }
-}
-
-# Snowflake password Key Vault secrets
-snowflake_passwords = {
-  snow_conn_1 = "snowflake_password_1"
-  snow_conn_2 = "snowflake_password_2"
-  snow_conn_3 = "snowflake_password_3"
-  snow_conn_4 = "snowflake_password_4"
-  snow_conn_5 = "snowflake_password_5"
 }
