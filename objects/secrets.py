@@ -17,3 +17,6 @@ secret_name = "fff"
 secret = secret_client.get_secret(secret_name)
 
 print(f"Retrieved secret: {secret.value}")
+
+# default azure databricks app id  
+#2ff814a6-3304-4ab8-85cb-cd0e6f879c1d
