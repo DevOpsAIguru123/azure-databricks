@@ -12,7 +12,7 @@ credential = DefaultAzureCredential()
 index_client = SearchIndexClient(endpoint=endpoint, credential=credential)
 
 # List all indexes
-indexes = index_client.get_indexes()
+indexes = index_client.list_indexes()
 
 # Print each index name
 for index in indexes:
