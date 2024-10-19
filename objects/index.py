@@ -1,26 +1,21 @@
 from azure.identity import DefaultAzureCredential
-from azure.search.documents.indexes import SearchIndexClient
-from azure.search.documents.indexes.models import SearchIndex, SimpleField, SearchFieldDataType
+from azure.search.documents import SearchClient
 
-# Set up your Azure Search service details
+# Azure Search service details
 search_service_name = "your-search-service-name"
+index_name = "your-index-name"
+
+# Endpoint format
 endpoint = f"https://{search_service_name}.search.windows.net"
 
-# Use DefaultAzureCredential to authenticate with Managed Identity
+# Authenticate using DefaultAzureCredential
 credential = DefaultAzureCredential()
 
-# Initialize the Index Client
-index_client = SearchIndexClient(endpoint=endpoint, credential=credential)
+# Initialize the SearchClient without any 'key' argument
+search_client = SearchClient(endpoint=endpoint, index_name=index_name, credential=credential)
 
-# Define the fields (schema) of the index
-fields = [
-    SimpleField(name="id", type=SearchFieldDataType.String, key=True),
-    SimpleField(name="name", type=SearchFieldDataType.String, searchable=True),
-    SimpleField(name="description", type=SearchFieldDataType.String, searchable=True)
-]
+# Perform a search operation (you may need an index and data for this part)
+search_results = search_client.search("Sample")
 
-# Create the index
-index = SearchIndex(name="my-sample-index", fields=fields)
-index_client.create_index(index)
-
-print("Index created.")
+for result in search_results:
+    print(result)
