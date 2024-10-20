@@ -6,7 +6,7 @@ snowflake_details = {
     user          = "user1"
     sfwarehouse   = "warehouse1"
     password_name = "snowflake_password_1"  # Key Vault secret name
-    catalog       = "db1"  # Database name
+    databases     = ["snow_conn_1_a", "snow_conn_1_b", "snow_conn_1_c", "snow_conn_1_d"]  # List of database names
   }
   snow_conn_2 = {
     host          = "xyz2.azure.snowflakecomputing.com"
@@ -14,7 +14,7 @@ snowflake_details = {
     user          = "user2"
     sfwarehouse   = "warehouse2"
     password_name = "snowflake_password_2"
-    catalog       = "db2"
+    databases     = ["snow_conn_2_a", "snow_conn_2_b", "snow_conn_2_c", "snow_conn_2_d"]
   }
   snow_conn_3 = {
     host          = "xyz3.azure.snowflakecomputing.com"
@@ -22,7 +22,7 @@ snowflake_details = {
     user          = "user3"
     sfwarehouse   = "warehouse3"
     password_name = "snowflake_password_3"
-    catalog       = "db3"
+    databases     = ["snow_conn_3_a", "snow_conn_3_b", "snow_conn_3_c", "snow_conn_3_d"]
   }
   snow_conn_4 = {
     host          = "xyz4.azure.snowflakecomputing.com"
@@ -30,7 +30,7 @@ snowflake_details = {
     user          = "user4"
     sfwarehouse   = "warehouse4"
     password_name = "snowflake_password_4"
-    catalog       = "db4"
+    databases     = ["snow_conn_4_a", "snow_conn_4_b", "snow_conn_4_c", "snow_conn_4_d"]
   }
   snow_conn_5 = {
     host          = "xyz5.azure.snowflakecomputing.com"
@@ -38,6 +38,6 @@ snowflake_details = {
     user          = "user5"
     sfwarehouse   = "warehouse5"
     password_name = "snowflake_password_5"
-    catalog       = "db5"
+    databases     = ["snow_conn_5_a", "snow_conn_5_b", "snow_conn_5_c", "snow_conn_5_d"]
   }
 }

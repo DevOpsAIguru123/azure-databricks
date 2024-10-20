@@ -7,6 +7,12 @@ provider "azurerm" {
   features {}
 }
 
+# Variable for environment
+variable "environment" {
+  description = "The environment, e.g., dev, test, prod"
+  type        = string
+}
+
 # Variable for Snowflake connection details (key-value map)
 variable "snowflake_details" {
   type = map(object({
@@ -15,8 +21,13 @@ variable "snowflake_details" {
     user          = string
     sfwarehouse   = string
     password_name = string
-    catalog       = string
+    databases     = list(string)  # List of database names
   }))
+}
+
+# Local variable for Key Vault ID (optional optimization)
+locals {
+  key_vault_id = azurerm_key_vault.example.id  # Replace with your Key Vault resource ID
 }
 
 # Key Vault Secret Data Source
@@ -24,7 +35,7 @@ data "azurerm_key_vault_secret" "snowflake_passwords" {
   for_each = var.snowflake_details
 
   name         = each.value.password_name
-  key_vault_id = azurerm_key_vault.example.id  # replace with your Key Vault resource ID
+  key_vault_id = local.key_vault_id
 }
 
 # Creating Databricks Snowflake Connections
@@ -48,24 +59,53 @@ resource "databricks_connection" "snowflake_connections" {
   }
 }
 
-# Creating Databricks Catalogs for each connection
-resource "databricks_catalog" "snowflake_catalogs" {
+# Granting all privileges on the connections to a specified principal
+resource "databricks_grants" "connection_grants" {
   for_each = var.snowflake_details
 
-  name            = each.value.catalog  # Use the database name (e.g., db1)
-  connection_name = databricks_connection.snowflake_connections[each.key].name  # Reference the connection name
-  comment         = "Catalog for database ${each.value.catalog}"
+  object_type = "CONNECTION"
+  object_name = databricks_connection.snowflake_connections[each.key].name
+  privileges  = ["ALL PRIVILEGES"]
 
-  options = {
-    database = each.value.catalog  # Map the catalog to the respective database
+  principal = "your_principal_here"  # Replace with the actual user or group
+}
+
+# Generating a map for the catalogs to be created
+locals {
+  database_catalogs = {
+    for dc in flatten([
+      for conn_key, conn_value in var.snowflake_details : [
+        for db_name in conn_value.databases : {
+          conn_key   = conn_key
+          conn_value = conn_value
+          database   = db_name
+          catalog    = "${db_name}-${var.environment}"
+        }
+      ]
+    ]) : "${dc.conn_key}-${dc.database}" => dc
   }
 }
 
-# Example Azure Key Vault resource definition (if needed)
-resource "azurerm_key_vault" "example" {
-  name                = "example-vault"
-  location            = "East US"
-  resource_group_name = "example-resource-group"
-  tenant_id           = "<tenant_id>"
-  sku_name            = "standard"
+# Creating Databricks Catalogs for each database
+resource "databricks_catalog" "snowflake_catalogs" {
+  for_each = local.database_catalogs
+
+  name            = each.value.catalog
+  connection_name = databricks_connection.snowflake_connections[each.value.conn_key].name
+  comment         = "Catalog for database ${each.value.database}"
+
+  options = {
+    database = each.value.database  # Use the database name
+  }
+}
+
+# Granting all privileges on the catalogs to a specified principal
+resource "databricks_grants" "catalog_grants" {
+  for_each = local.database_catalogs
+
+  object_type = "CATALOG"
+  object_name = databricks_catalog.snowflake_catalogs[each.key].name
+  privileges  = ["ALL PRIVILEGES"]
+
+  principal = "your_principal_here"  # Replace with the actual user or group
 }
